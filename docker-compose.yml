@@ -1,0 +1,25 @@
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.8.1
+    container_name: keycloak_server
+    restart: always
+    env_file:
+      - .env
+    environment:
+      KC_DB: postgres
+      KC_DB_URL: ${DB_URL}
+      KC_DB_USERNAME: ${DB_USERNAME}
+      KC_DB_PASSWORD: ${DB_PASSWORD}
+      KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
+      KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      
+      KC_HOSTNAME: auth.chemilabi.trade
+      KC_PROXY_HEADERS: xforwarded
+      KC_HTTP_ENABLED: "true"
+      KC_HOSTNAME_STRICT: "true"
+    command:
+      - start
+    ports:
+      - "9090:8080"
+    volumes:
+      - ./themes:/opt/keycloak/themes
