@@ -1,0 +1,33 @@
+{
+  "realm": "notebase-dev",
+  "displayName": "NoteBase",
+  "enabled": true,
+  "loginTheme": "notebase",
+  "registrationAllowed": true,
+  "resetPasswordAllowed": true,
+  "rememberMe": true,
+  "loginWithEmailAllowed": true,
+  "verifyEmail": false,
+  "internationalizationEnabled": true,
+  "supportedLocales": ["ka"],
+  "defaultLocale": "ka",
+  "smtpServer": {
+    "host": "mailpit",
+    "port": "1025",
+    "from": "noreply@notebase.local",
+    "fromDisplayName": "NoteBase"
+  },
+  "users": [
+    {
+      "username": "student",
+      "email": "student@notebase.local",
+      "emailVerified": true,
+      "firstName": "ნინო",
+      "lastName": "ბერიძე",
+      "enabled": true,
+      "credentials": [
+        { "type": "password", "value": "student", "temporary": false }
+      ]
+    }
+  ]
+}

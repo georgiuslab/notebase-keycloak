@@ -1,0 +1,29 @@
+# Local preview of the login theme. Not used by the production deploy.
+#
+#   docker compose -f docker-compose.dev.yml up
+#
+# Keycloak:  http://localhost:8080   (admin console login: see README.md)
+# Mailpit:   http://localhost:8025   (catches password-reset / verification emails)
+#
+# start-dev turns theme caching off, so edits under ./themes show up on browser refresh.
+services:
+  keycloak:
+    image: quay.io/keycloak/keycloak:26.8.1
+    container_name: notebase_keycloak_dev
+    command: ["start-dev", "--import-realm"]
+    environment:
+      KC_BOOTSTRAP_ADMIN_USERNAME: admin
+      KC_BOOTSTRAP_ADMIN_PASSWORD: admin
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./themes:/opt/keycloak/themes
+      - ./dev/notebase-dev-realm.json:/opt/keycloak/data/import/notebase-dev-realm.json:ro
+    depends_on:
+      - mailpit
+
+  mailpit:
+    image: axllent/mailpit:v1.27
+    container_name: notebase_mailpit_dev
+    ports:
+      - "8025:8025"

@@ -1,0 +1,1343 @@
+/*
+ * NoteBase login theme.
+ *
+ * The idea: an exercise-book page. The left column is ruled paper with a
+ * red double margin line taken from the shield, carrying the university
+ * motto. The right column is a plain sheet with the form.
+ *
+ * Colours come from the logo (shield red, slate grey) and the Stitch tokens
+ * (ink = token background #0b1326 family, red = primary-container #dc2626).
+ */
+
+:root {
+  --nb-paper: #f6f2ea;
+  --nb-sheet: #fffdf9;
+  --nb-ink: #131a2b;
+  --nb-ink-2: #454b58;
+  --nb-ink-3: #6b707c;
+  --nb-line: #e3ddd1;
+  --nb-field: #cdc5b6;
+  --nb-field-hover: #a79e8f;
+  --nb-rule: rgba(19, 26, 43, 0.075);
+  --nb-margin: rgba(220, 38, 38, 0.42);
+
+  --nb-red: #dc2626;
+  --nb-red-deep: #a8121c;
+  --nb-red-wash: #fcefed;
+  --nb-green: #00714e;
+  --nb-green-wash: #ebf5ef;
+  --nb-amber: #9a4a06;
+  --nb-amber-wash: #fbf2e4;
+  --nb-slate-wash: #eef0f4;
+  --nb-pen: #2b4ea2; /* ballpoint blue for the doodles */
+  --nb-marker: rgba(255, 205, 0, 0.55);
+  --nb-sticky: #ffe27a;
+
+  --nb-hand: "Caveat", "Noto Sans Georgian", cursive;
+  --nb-serif: "Noto Serif Georgian", Georgia, "Times New Roman", serif;
+  --nb-sans: "Geist", "Noto Sans Georgian", system-ui, -apple-system, "Segoe UI", sans-serif;
+
+  --nb-radius: 4px;
+  --nb-step: 32px; /* ruled-line spacing */
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body.nb {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--nb-sheet);
+  color: var(--nb-ink);
+  font-family: var(--nb-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+img {
+  max-width: 100%;
+}
+
+p {
+  margin: 0;
+}
+
+.nb-hidden {
+  display: none !important;
+}
+
+.nb-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+/* ---------- Links ---------- */
+
+a {
+  color: var(--nb-ink);
+  text-decoration: underline;
+  text-decoration-color: rgba(220, 38, 38, 0.5);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 3px;
+  transition: color 0.15s, text-decoration-color 0.15s;
+}
+
+a:hover {
+  color: var(--nb-red-deep);
+  text-decoration-color: currentColor;
+}
+
+a:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--nb-ink);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ---------- Page layout ---------- */
+
+.nb-page {
+  display: grid;
+  grid-template-columns: 1fr;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Ruled paper with the margin line. The rules are anchored to the bottom so
+   that the bottom-aligned motto sits on them whatever the viewport height. */
+.nb-aside {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 16px 20px 16px 44px;
+  background-color: var(--nb-paper);
+  background-image: linear-gradient(to top, var(--nb-rule) 1px, transparent 1px);
+  background-size: 100% var(--nb-step);
+  background-position: left bottom;
+  border-bottom: 1px solid var(--nb-line);
+}
+
+.nb-aside::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 24px;
+  width: 4px;
+  border-left: 1px solid var(--nb-margin);
+  border-right: 1px solid var(--nb-margin);
+  pointer-events: none;
+}
+
+.nb-logo {
+  display: block;
+  flex: none;
+  width: auto;
+  height: 48px;
+}
+
+/* Logo + "SANGU NoteBase", same wordmark as the website header */
+.nb-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.nb-brand-text {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.nb-brand-name {
+  font-family: var(--nb-serif);
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
+  color: var(--nb-ink);
+  white-space: nowrap;
+}
+
+.nb-brand-tag {
+  font-size: 12px;
+  line-height: 1.4;
+  color: var(--nb-ink-3);
+}
+
+.nb-motto {
+  margin: 0;
+}
+
+.nb-motto-text {
+  margin: 0;
+  font-family: var(--nb-serif);
+  font-weight: 600;
+  color: var(--nb-ink);
+}
+
+.nb-motto-source {
+  font-family: var(--nb-hand);
+  font-weight: 500;
+  color: var(--nb-pen);
+}
+
+/* Highlighter swipe behind the second line of the motto */
+.nb-highlight {
+  position: relative;
+  z-index: 0;
+  color: inherit;
+  background: none;
+}
+
+.nb-highlight::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  left: -0.1em;
+  right: -0.14em;
+  top: 0.42em;
+  bottom: 0.04em;
+  background: var(--nb-marker);
+  border-radius: 0.18em 0.5em 0.28em 0.6em;
+  transform: rotate(-1.4deg);
+  transform-origin: left center;
+  animation: nb-swipe 0.6s 0.5s cubic-bezier(0.3, 0.7, 0.4, 1) both;
+}
+
+.nb-doodles {
+  display: none;
+}
+
+.nb-aside-note {
+  display: none;
+}
+
+/* Phones and tablets: a compact ruled band with logo and a one-line motto. */
+@media (max-width: 1023px) {
+  .nb-motto {
+    text-align: right;
+  }
+
+  .nb-motto-text {
+    font-size: 17px;
+    line-height: 24px;
+  }
+
+  .nb-motto-text br {
+    display: none;
+  }
+
+  .nb-motto-source {
+    font-size: 19px;
+    line-height: 22px;
+  }
+}
+
+/* Small phones: motto only, no Latin line */
+/* Small phones: the wordmark needs the room, so the motto steps aside */
+@media (max-width: 479px) {
+  .nb-motto,
+  .nb-brand-tag {
+    display: none;
+  }
+}
+
+/* Desktop: two columns, the ruled page stays put while the form scrolls. */
+@media (min-width: 1024px) {
+  .nb-page {
+    grid-template-columns: minmax(400px, 5fr) 7fr;
+  }
+
+  .nb-aside {
+    position: sticky;
+    z-index: 1; /* lets the arrow doodle cross into the form column */
+    top: 0;
+    height: 100vh;
+    height: 100dvh;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0;
+    padding: 48px 56px var(--nb-step) 112px;
+    border-bottom: 0;
+    border-right: 1px solid var(--nb-line);
+  }
+
+  .nb-aside::before {
+    left: 76px;
+  }
+
+  .nb-logo {
+    height: 76px;
+  }
+
+  .nb-brand {
+    gap: 16px;
+  }
+
+  .nb-brand-name {
+    font-size: 20px;
+  }
+
+  .nb-brand-tag {
+    font-size: 13px;
+  }
+
+  .nb-motto {
+    margin-top: auto;
+  }
+
+  /* line-height is two rules, the nudge puts the baseline on a rule */
+  .nb-motto-text {
+    font-size: clamp(42px, 3.9vw, 56px);
+    line-height: calc(var(--nb-step) * 2);
+    letter-spacing: -0.01em;
+    position: relative;
+    top: 9px;
+  }
+
+  .nb-motto-source {
+    font-size: 26px;
+    line-height: var(--nb-step);
+    position: relative;
+    top: 6px;
+    left: 4px;
+    transform: rotate(-2deg);
+    transform-origin: left center;
+  }
+
+  .nb-aside-note {
+    display: block;
+    max-width: 30ch;
+    margin-top: calc(var(--nb-step) * 2);
+    font-size: 13px;
+    line-height: var(--nb-step);
+    color: var(--nb-ink-3);
+    position: relative;
+    top: 9px;
+  }
+
+  /* ---------- Margin doodles (desktop only) ---------- */
+
+  .nb-doodles {
+    display: block;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+  }
+
+  .nb-doodle {
+    position: absolute;
+    margin: 0;
+    color: var(--nb-pen);
+  }
+
+  svg.nb-doodle {
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    overflow: visible;
+  }
+
+  .nb-doodle path {
+    stroke-dasharray: 1;
+    animation: nb-draw 0.9s ease-out both;
+  }
+
+  .nb-doodle--bulb {
+    top: 196px;
+    left: 132px;
+    width: 58px;
+    transform: rotate(-10deg);
+  }
+
+  .nb-doodle--bulb path:nth-child(2) { animation-delay: 0.25s; }
+  .nb-doodle--bulb path:nth-child(3) { animation-delay: 0.4s; }
+  .nb-doodle--bulb path:nth-child(4) { animation-delay: 0.55s; }
+
+  .nb-formula {
+    top: 330px;
+    left: 200px;
+    font-family: var(--nb-hand);
+    font-size: 28px;
+    font-weight: 500;
+    line-height: 34px;
+    transform: rotate(-6deg);
+    animation: nb-ink 0.8s 0.3s ease-out both;
+  }
+
+  .nb-formula span {
+    display: block;
+  }
+
+  .nb-formula span + span {
+    margin-left: 40px;
+    font-size: 24px;
+  }
+
+  .nb-doodle--star {
+    right: 72px;
+    bottom: 250px;
+    width: 40px;
+    color: var(--nb-red);
+    transform: rotate(12deg);
+  }
+
+  .nb-doodle--star path {
+    animation-delay: 0.9s;
+  }
+
+  /* Starts under the sticky note and crosses into the form column */
+  .nb-doodle--arrow {
+    top: 318px;
+    right: -96px;
+    width: 196px;
+  }
+
+  .nb-doodle--arrow path {
+    animation-delay: 1.1s;
+  }
+
+  .nb-doodle--arrow path + path {
+    animation-delay: 1.5s;
+    animation-duration: 0.3s;
+  }
+
+  /* Sticky note with a to-do list */
+  .nb-sticky {
+    position: absolute;
+    top: 132px;
+    right: 44px;
+    width: 216px;
+    padding: 28px 18px 18px;
+    background: var(--nb-sticky);
+    color: #3b3420;
+    box-shadow:
+      0 1px 1px rgba(60, 45, 0, 0.08),
+      0 14px 24px -14px rgba(80, 60, 0, 0.45);
+    border-radius: 2px 2px 14px 2px / 2px 2px 6px 2px;
+    transform: rotate(3deg);
+    animation: nb-stick 0.6s 0.2s cubic-bezier(0.2, 0.9, 0.3, 1.25) both;
+    pointer-events: auto;
+    transition: transform 0.3s ease;
+  }
+
+  .nb-sticky:hover {
+    transform: rotate(0.5deg) translateY(-2px);
+  }
+
+  .nb-sticky-title {
+    margin-bottom: 10px;
+    font-size: 15px;
+    font-weight: 600;
+  }
+
+  .nb-sticky-list {
+    display: grid;
+    gap: 8px;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-size: 14px;
+    line-height: 1.35;
+  }
+
+  .nb-sticky-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 9px;
+  }
+
+  .nb-sticky-list .is-done {
+    text-decoration: line-through;
+    text-decoration-color: rgba(43, 78, 162, 0.55);
+    text-decoration-thickness: 1.5px;
+    color: rgba(59, 52, 32, 0.7);
+  }
+
+  .nb-sticky-list .is-todo {
+    font-weight: 600;
+  }
+
+  .nb-check {
+    flex: none;
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    fill: none;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    overflow: visible;
+  }
+
+  .nb-check .nb-box {
+    stroke: rgba(59, 52, 32, 0.55);
+    stroke-width: 1.4;
+  }
+
+  .nb-check .nb-ink-path {
+    stroke: var(--nb-pen);
+    stroke-width: 2.4;
+    stroke-dasharray: 1;
+    stroke-dashoffset: 1;
+  }
+
+  .is-done .nb-ink-path {
+    animation: nb-draw 0.35s ease-out both;
+    stroke-dashoffset: 0;
+  }
+
+  .nb-sticky-list li:nth-child(1) .nb-ink-path { animation-delay: 0.8s; }
+  .nb-sticky-list li:nth-child(2) .nb-ink-path { animation-delay: 1.05s; }
+  .nb-sticky-list li.is-todo.is-done .nb-ink-path { animation-delay: 0s; }
+
+  /* Narrower desktops: the left page is tighter, give the logo room */
+  @media (max-width: 1279px) {
+    .nb-sticky {
+      top: 168px;
+      right: 28px;
+      width: 200px;
+    }
+
+    .nb-doodle--bulb {
+      top: 214px;
+      left: 116px;
+    }
+
+    .nb-formula {
+      top: 368px;
+      left: 136px;
+    }
+
+    .nb-doodle--arrow {
+      top: 346px;
+      right: -70px;
+      width: 150px;
+    }
+  }
+
+  /* Short screens: keep only what fits */
+  @media (max-height: 780px) {
+    .nb-formula {
+      display: none;
+    }
+  }
+
+  @media (max-height: 740px) {
+    .nb-doodle--bulb,
+    .nb-doodle--star,
+    .nb-doodle--arrow {
+      display: none;
+    }
+  }
+
+  @media (max-height: 640px) {
+    .nb-sticky {
+      display: none;
+    }
+  }
+}
+
+.nb-tape {
+  position: absolute;
+  width: 92px;
+  height: 26px;
+  background: rgba(244, 214, 120, 0.72);
+  clip-path: polygon(0 8%, 5% 0, 12% 6%, 20% 0, 80% 4%, 88% 0, 95% 6%, 100% 0, 98% 50%, 100% 100%, 92% 94%, 85% 100%, 15% 96%, 8% 100%, 0 92%, 3% 50%);
+  pointer-events: none;
+}
+
+.nb-tape--sticky {
+  top: -12px;
+  left: 50%;
+  width: 84px;
+  margin-left: -42px;
+  background: rgba(255, 255, 255, 0.55);
+  transform: rotate(-3deg);
+}
+
+/* ---------- Main column ---------- */
+
+/* Dot-grid paper behind the form */
+.nb-main {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+  background-color: var(--nb-sheet);
+  background-image: radial-gradient(circle at 1px 1px, rgba(19, 26, 43, 0.14) 1px, transparent 1.4px);
+  background-size: 22px 22px;
+}
+
+.nb-topbar {
+  display: flex;
+  justify-content: flex-end;
+  padding: 16px 20px 0;
+}
+
+.nb-locale {
+  display: flex;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 13px;
+}
+
+.nb-locale a {
+  display: block;
+  padding: 4px 8px;
+  color: var(--nb-ink-3);
+  text-decoration: none;
+  border-radius: var(--nb-radius);
+}
+
+.nb-locale a:hover {
+  color: var(--nb-ink);
+  background: var(--nb-slate-wash);
+}
+
+.nb-locale a[aria-current="true"] {
+  color: var(--nb-ink);
+  font-weight: 600;
+}
+
+.nb-sheet {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  padding: 36px 14px 48px;
+}
+
+/* The form is a sheet taped onto the page */
+.nb-card {
+  position: relative;
+  width: 100%;
+  max-width: 480px;
+  padding: 36px 22px 26px;
+  background: #fff;
+  border: 1px solid var(--nb-line);
+  border-radius: 6px;
+  box-shadow:
+    0 1px 2px rgba(19, 26, 43, 0.05),
+    0 22px 44px -28px rgba(19, 26, 43, 0.35);
+  animation: nb-rise 0.5s ease-out both;
+}
+
+.nb--wide .nb-card {
+  max-width: 540px;
+}
+
+.nb-tape--left {
+  top: -13px;
+  left: 22px;
+  transform: rotate(-7deg);
+}
+
+.nb-tape--right {
+  top: -11px;
+  right: 22px;
+  width: 78px;
+  background: repeating-linear-gradient(135deg, rgba(220, 38, 38, 0.32) 0 6px, rgba(255, 255, 255, 0.35) 6px 12px);
+  transform: rotate(6deg);
+}
+
+@media (min-width: 640px) {
+  .nb-card {
+    padding: 48px 40px 32px;
+  }
+
+  .nb-sheet {
+    padding: 56px 40px 64px;
+  }
+  .nb-topbar {
+    padding: 24px 32px 0;
+  }
+}
+
+@media (min-width: 1024px) {
+  .nb-sheet {
+    align-items: center;
+    padding: 48px 64px;
+  }
+}
+
+.nb-foot {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 4px 16px;
+  padding: 16px 20px 20px;
+  border-top: 1px solid var(--nb-line);
+  background: var(--nb-sheet);
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--nb-ink-3);
+}
+
+@media (min-width: 640px) {
+  .nb-foot {
+    padding: 18px 32px;
+  }
+}
+
+.nb-foot-year {
+  white-space: nowrap;
+}
+
+/* ---------- Heading ---------- */
+
+.nb-head {
+  margin-bottom: 28px;
+}
+
+.nb-title {
+  margin: 0;
+  font-family: var(--nb-serif);
+  font-size: 26px;
+  font-weight: 600;
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+  color: var(--nb-ink);
+}
+
+@media (min-width: 640px) {
+  .nb-title {
+    font-size: 32px;
+  }
+}
+
+/* Red-pen underline drawn under the page title */
+.nb-title-text {
+  position: relative;
+  display: inline-block;
+}
+
+.nb-underline {
+  position: absolute;
+  left: -4px;
+  bottom: -9px;
+  width: calc(100% + 10px);
+  height: 12px;
+  fill: none;
+  stroke: var(--nb-red);
+  stroke-width: 3;
+  stroke-linecap: round;
+  overflow: visible;
+}
+
+.nb-underline path {
+  stroke-dasharray: 1;
+  animation: nb-draw 0.7s 0.35s ease-out both;
+}
+
+.nb-subtitle {
+  margin-top: 20px;
+  color: var(--nb-ink-2);
+  max-width: 44ch;
+}
+
+.nb-required-note {
+  margin-top: 12px;
+  font-size: 13px;
+  color: var(--nb-ink-3);
+}
+
+.required {
+  color: var(--nb-red);
+  font-weight: 500;
+}
+
+/* Remembered username shown on the password step */
+.nb-user {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 20px;
+  padding: 10px 14px;
+  background: var(--nb-paper);
+  border: 1px solid var(--nb-line);
+  border-radius: var(--nb-radius);
+  font-size: 14px;
+}
+
+.nb-user-name {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* ---------- Form fields ---------- */
+
+.nb-form {
+  margin: 0;
+}
+
+.nb-field {
+  margin: 0 0 20px;
+}
+
+.nb-field--tight {
+  margin-bottom: 24px;
+}
+
+.nb-label-row {
+  display: flex;
+  align-items: baseline;
+  gap: 2px 4px;
+  flex-wrap: wrap;
+  margin-bottom: 6px;
+}
+
+.nb-label {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.4;
+  color: var(--nb-ink-2);
+}
+
+.nb-label-link {
+  margin-left: auto;
+  font-size: 13px;
+  color: var(--nb-ink-2);
+}
+
+.nb-input {
+  display: block;
+  width: 100%;
+  height: 46px;
+  margin: 0;
+  padding: 0 14px;
+  font-family: inherit;
+  font-size: 16px; /* 16px stops iOS from zooming on focus */
+  color: var(--nb-ink);
+  background: #fff;
+  border: 1px solid var(--nb-field);
+  border-radius: var(--nb-radius);
+  transition: border-color 0.15s, box-shadow 0.15s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+textarea.nb-input {
+  height: auto;
+  min-height: 96px;
+  padding: 10px 14px;
+  resize: vertical;
+}
+
+select.nb-input {
+  padding-right: 40px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none' stroke='%23454b58' stroke-width='1.5'%3E%3Cpath d='M1 1.5l5 5 5-5'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 14px center;
+}
+
+select[multiple].nb-input {
+  height: auto;
+  padding: 6px 10px;
+  background-image: none;
+}
+
+.nb-input:hover {
+  border-color: var(--nb-field-hover);
+}
+
+.nb-input:focus {
+  outline: none;
+  border-color: var(--nb-ink);
+  box-shadow: 0 0 0 3px rgba(19, 26, 43, 0.1);
+}
+
+.nb-input[aria-invalid="true"] {
+  border-color: var(--nb-red);
+}
+
+.nb-input[aria-invalid="true"]:focus {
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.14);
+}
+
+.nb-input:disabled {
+  color: var(--nb-ink-3);
+  background: var(--nb-paper);
+  cursor: not-allowed;
+}
+
+.nb-input::placeholder {
+  color: #9a9ea8;
+}
+
+.nb-input-wrap + .nb-input-wrap {
+  margin-top: 8px;
+}
+
+.nb-input-group {
+  position: relative;
+}
+
+.nb-input-group .nb-input {
+  padding-right: 50px;
+}
+
+.nb-reveal {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  padding: 0;
+  color: var(--nb-ink-3);
+  background: transparent;
+  border: 0;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.nb-reveal:hover {
+  color: var(--nb-ink);
+  background: var(--nb-slate-wash);
+}
+
+.nb-icon {
+  display: block;
+  width: 20px;
+  height: 20px;
+  background-color: currentColor;
+  -webkit-mask: var(--nb-icon) center / contain no-repeat;
+  mask: var(--nb-icon) center / contain no-repeat;
+}
+
+.nb-icon--eye {
+  --nb-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z'/%3E%3Ccircle cx='12' cy='12' r='3'/%3E%3C/svg%3E");
+}
+
+.nb-icon--eye-off {
+  --nb-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='1.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9.9 5.7A10 10 0 0 1 12 5.5c6.4 0 10 6.5 10 6.5a17 17 0 0 1-2.9 3.7M6.6 6.6C3.7 8.4 2 12 2 12s3.6 6.5 10 6.5c1.8 0 3.4-.5 4.8-1.2'/%3E%3Cpath d='M9.9 9.9a3 3 0 0 0 4.2 4.2M3 3l18 18'/%3E%3C/svg%3E");
+}
+
+.nb-error {
+  display: block;
+  margin-top: 6px;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--nb-red-deep);
+}
+
+.nb-help {
+  margin: 4px 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--nb-ink-3);
+}
+
+.nb-group-title {
+  display: block;
+  margin-top: 8px;
+  font-family: var(--nb-serif);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+/* Registration: first and last name side by side when there is room */
+@media (min-width: 480px) {
+  .nb-form--grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 16px;
+  }
+
+  .nb-form--grid > * {
+    grid-column: 1 / -1;
+  }
+
+  .nb-form--grid > .nb-field:has(#firstName),
+  .nb-form--grid > .nb-field:has(#lastName) {
+    grid-column: auto;
+  }
+}
+
+/* ---------- Checkboxes and radios ---------- */
+
+.nb-choice,
+.checkbox label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  color: var(--nb-ink-2);
+  cursor: pointer;
+}
+
+div.nb-choice {
+  display: flex;
+  margin-bottom: 8px;
+}
+
+.nb-choice-input,
+.checkbox input,
+.nb-form input[type="checkbox"],
+.nb-form input[type="radio"] {
+  width: 18px;
+  height: 18px;
+  margin: 0;
+  flex: none;
+  accent-color: var(--nb-red);
+  cursor: pointer;
+}
+
+.nb-choice-label--disabled {
+  opacity: 0.6;
+}
+
+#kc-registration-terms-text {
+  max-height: 160px;
+  overflow: auto;
+  margin: 8px 0 12px;
+  padding: 12px 14px;
+  font-size: 13px;
+  background: var(--nb-paper);
+  border: 1px solid var(--nb-line);
+  border-radius: var(--nb-radius);
+}
+
+/* ---------- Buttons ---------- */
+
+.nb-actions {
+  margin-top: 8px;
+}
+
+.nb-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 46px;
+  padding: 0 20px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  line-height: 1.2;
+  text-align: center;
+  text-decoration: none;
+  border: 1px solid transparent;
+  border-radius: var(--nb-radius);
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.nb-btn--block {
+  width: 100%;
+}
+
+/* Primary button sits on a darker edge and presses down like a key */
+.nb-btn--primary {
+  color: #fff;
+  background: var(--nb-red);
+  box-shadow: 0 3px 0 #8f0f17;
+  transition: background-color 0.15s, transform 0.12s, box-shadow 0.12s;
+}
+
+.nb-btn--primary:hover {
+  color: #fff;
+  background: #c91f1f;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 0 #8f0f17;
+}
+
+.nb-btn--primary:active {
+  transform: translateY(3px);
+  box-shadow: 0 0 0 #8f0f17;
+}
+
+.nb-btn--secondary {
+  color: var(--nb-ink);
+  background: #fff;
+  border-color: var(--nb-field);
+}
+
+.nb-btn--secondary:hover {
+  color: var(--nb-ink);
+  border-color: var(--nb-field-hover);
+  background: var(--nb-paper);
+}
+
+.nb-btn:disabled,
+.nb-btn--disabled {
+  opacity: 0.65;
+  cursor: progress;
+  pointer-events: none;
+}
+
+.nb-btn:focus-visible {
+  outline: 2px solid var(--nb-ink);
+  outline-offset: 2px;
+}
+
+/* Keycloak's base pages use plain submit inputs side by side */
+.nb-actions .nb-btn + .nb-btn {
+  margin-top: 10px;
+}
+
+.nb-link-btn {
+  padding: 0;
+  font: inherit;
+  font-size: 14px;
+  color: var(--nb-ink);
+  background: none;
+  border: 0;
+  text-decoration: underline;
+  text-decoration-color: rgba(220, 38, 38, 0.5);
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+
+.nb-link-btn:hover {
+  color: var(--nb-red-deep);
+}
+
+.nb-aside-form {
+  margin-top: 20px;
+}
+
+/* ---------- Info below the form ---------- */
+
+.nb-info {
+  margin-top: 28px;
+  padding-top: 20px;
+  border-top: 1px solid var(--nb-line);
+  font-size: 14px;
+  color: var(--nb-ink-2);
+}
+
+.nb-back::before {
+  content: "\2190\00a0";
+  display: inline-block;
+  text-decoration: none;
+}
+
+/* ---------- Alerts ---------- */
+
+.nb-alert {
+  margin: 0 0 24px;
+  padding: 12px 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  border-left: 3px solid;
+  border-radius: 0 var(--nb-radius) var(--nb-radius) 0;
+}
+
+.nb-alert.alert-error {
+  color: #6f0c12;
+  background: var(--nb-red-wash);
+  border-color: var(--nb-red);
+}
+
+.nb-alert.alert-success {
+  color: #0c3b2a;
+  background: var(--nb-green-wash);
+  border-color: var(--nb-green);
+}
+
+.nb-alert.alert-warning {
+  color: #53290a;
+  background: var(--nb-amber-wash);
+  border-color: var(--nb-amber);
+}
+
+.nb-alert.alert-info {
+  color: var(--nb-ink);
+  background: var(--nb-slate-wash);
+  border-color: #39485a;
+}
+
+/* ---------- Identity providers ---------- */
+
+.nb-social {
+  margin-top: 24px;
+}
+
+.nb-social hr,
+.nb-social > h2 {
+  display: none;
+}
+
+.nb-divider {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  font-size: 13px;
+  color: var(--nb-ink-3);
+}
+
+.nb-divider::before,
+.nb-divider::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: var(--nb-line);
+}
+
+.nb-social-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 480px) {
+  .nb-social-list--grid {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+/* ---------- Other Keycloak pages (info, error, OTP, authenticator choice) ---------- */
+
+#kc-info-message p,
+.instruction {
+  margin: 0 0 16px;
+  color: var(--nb-ink-2);
+}
+
+.nb-auth-list {
+  display: grid;
+  gap: 8px;
+}
+
+.nb-auth-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 14px 16px;
+  text-align: left;
+  color: var(--nb-ink);
+  background: #fff;
+  border: 1px solid var(--nb-field);
+  border-radius: var(--nb-radius);
+  cursor: pointer;
+}
+
+.nb-auth-item:hover {
+  border-color: var(--nb-field-hover);
+  background: var(--nb-paper);
+}
+
+.nb-auth-title {
+  font-weight: 600;
+}
+
+.nb-auth-desc {
+  font-size: 13px;
+  color: var(--nb-ink-3);
+}
+
+.nb-otp-list {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.nb-otp-input {
+  margin-right: 8px;
+  accent-color: var(--nb-red);
+}
+
+.nb-codes {
+  padding: 16px 20px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  background: var(--nb-paper);
+  border: 1px solid var(--nb-line);
+  border-radius: var(--nb-radius);
+}
+
+#kc-totp-secret-qr-code {
+  display: block;
+  margin: 12px 0;
+  border: 1px solid var(--nb-line);
+}
+
+/* ---------- Motion ---------- */
+
+@keyframes nb-draw {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes nb-swipe {
+  from {
+    transform: rotate(-1.4deg) scaleX(0);
+  }
+}
+
+@keyframes nb-ink {
+  from {
+    opacity: 0;
+    clip-path: inset(0 100% 0 0);
+  }
+  to {
+    opacity: 1;
+    clip-path: inset(0 0 0 0);
+  }
+}
+
+@keyframes nb-stick {
+  from {
+    opacity: 0;
+    transform: translateY(-18px) rotate(-4deg) scale(1.04);
+  }
+}
+
+@keyframes nb-rise {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+
+  .nb-check .nb-ink-path {
+    stroke-dashoffset: 1;
+  }
+
+  .is-done .nb-ink-path {
+    stroke-dashoffset: 0;
+  }
+}
