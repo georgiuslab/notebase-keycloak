@@ -429,7 +429,7 @@ button:focus-visible {
     position: absolute;
     top: 132px;
     right: 44px;
-    width: 216px;
+    width: 236px;
     padding: 28px 18px 18px;
     background: var(--nb-sticky);
     color: #3b3420;
@@ -517,7 +517,7 @@ button:focus-visible {
     .nb-sticky {
       top: 168px;
       right: 28px;
-      width: 200px;
+      width: 216px;
     }
 
     .nb-doodle--bulb {

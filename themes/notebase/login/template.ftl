@@ -18,9 +18,13 @@
     <link rel="icon" type="image/png" href="${url.resourcesPath}/img/favicon.png" />
     <link rel="apple-touch-icon" href="${url.resourcesPath}/img/apple-touch-icon.png" />
 
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;700&family=Geist:wght@400;500;600&family=Noto+Sans+Georgian:wght@400;500;600&family=Noto+Serif+Georgian:wght@500;600&display=swap">
+    <#-- Start the font downloads right away so the first paint already uses them (fonts.css declares them) -->
+    <link rel="preload" href="${url.resourcesPath}/fonts/noto-sans-georgian-georgian.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="${url.resourcesPath}/fonts/noto-serif-georgian-georgian.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="${url.resourcesPath}/fonts/noto-serif-georgian-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="preload" href="${url.resourcesPath}/fonts/geist-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <#-- Handwriting only shows from 480px up -->
+    <link rel="preload" href="${url.resourcesPath}/fonts/caveat-latin.woff2" as="font" type="font/woff2" crossorigin media="(min-width: 480px)">
 
     <#if properties.styles?has_content>
         <#list properties.styles?split(' ') as style>
