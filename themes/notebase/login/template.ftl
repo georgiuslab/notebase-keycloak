@@ -105,6 +105,14 @@
             </p>
         </div>
 
+        <#-- The last to-do on the sticky note matches the page: sign in, register or recover the password -->
+        <#assign noteTodoKey = "nbNoteItem3">
+        <#if pageId == "register">
+            <#assign noteTodoKey = "nbNoteItem3Register">
+        <#elseif pageId == "login-reset-password">
+            <#assign noteTodoKey = "nbNoteItem3Reset">
+        </#if>
+
         <#-- Margin doodles: decoration only, hidden from screen readers -->
         <div class="nb-doodles" aria-hidden="true">
             <div class="nb-sticky">
@@ -113,7 +121,7 @@
                 <ul class="nb-sticky-list">
                     <li class="is-done"><svg class="nb-check" viewBox="0 0 18 18"><rect class="nb-box" x="1.5" y="2" width="14" height="14" rx="2"/><path class="nb-ink-path" pathLength="1" d="M4 9.5l3.5 3.5L16.5 1.5"/></svg>${msg("nbNoteItem1")}</li>
                     <li class="is-done"><svg class="nb-check" viewBox="0 0 18 18"><rect class="nb-box" x="1.5" y="2" width="14" height="14" rx="2"/><path class="nb-ink-path" pathLength="1" d="M4 9.5l3.5 3.5L16.5 1.5"/></svg>${msg("nbNoteItem2")}</li>
-                    <li class="is-todo"><svg class="nb-check" viewBox="0 0 18 18"><rect class="nb-box" x="1.5" y="2" width="14" height="14" rx="2"/><path class="nb-ink-path" pathLength="1" d="M4 9.5l3.5 3.5L16.5 1.5"/></svg>${msg("nbNoteItem3")}</li>
+                    <li class="is-todo"><svg class="nb-check" viewBox="0 0 18 18"><rect class="nb-box" x="1.5" y="2" width="14" height="14" rx="2"/><path class="nb-ink-path" pathLength="1" d="M4 9.5l3.5 3.5L16.5 1.5"/></svg>${msg(noteTodoKey)}</li>
                 </ul>
             </div>
 
