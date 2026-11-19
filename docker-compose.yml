@@ -1,8 +1,25 @@
 services:
+  keycloak_postgres:
+    image: postgres:18-alpine
+    container_name: keycloak_postgres
+    restart: unless-stopped
+    env_file:
+      - .env
+    environment:
+      POSTGRES_DB: ${KEYCLOAK_DB_NAME}
+      POSTGRES_USER: ${KEYCLOAK_DB_USER}
+      POSTGRES_PASSWORD: ${KEYCLOAK_DB_PASSWORD}
+    volumes:
+      - keycloak_pgdata:/var/lib/postgresql/data
+    networks:
+      - notebase-shared-net
+
   keycloak:
     image: quay.io/keycloak/keycloak:26.8.1
     container_name: keycloak_server
     restart: always
+    depends_on:
+      - keycloak_postgres
     env_file:
       - .env
     environment:
@@ -12,7 +29,7 @@ services:
       KC_DB_PASSWORD: ${DB_PASSWORD}
       KEYCLOAK_ADMIN: ${KEYCLOAK_ADMIN}
       KEYCLOAK_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
-      
+
       KC_HOSTNAME: auth.chemilabi.trade
       KC_PROXY_HEADERS: xforwarded
       KC_HTTP_ENABLED: "true"
@@ -23,3 +40,12 @@ services:
       - "9090:8080"
     volumes:
       - ./themes:/opt/keycloak/themes
+    networks:
+      - notebase-shared-net
+
+volumes:
+  keycloak_pgdata:
+
+networks:
+  notebase-shared-net:
+    external: true
